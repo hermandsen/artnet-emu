@@ -1,0 +1,12 @@
+<project name="Record" default="build">
+    <target name="build">
+        <csc optimize="true" target="library" output="Record.dll" doc="Record.xml">
+            <references>
+                <include name="log4net.dll"/>
+            </references>
+            <sources>
+                <include name="*.cs"/>
+            </sources>
+        </csc>
+    </target>
+</project>
