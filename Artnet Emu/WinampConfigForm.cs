@@ -14,5 +14,9 @@ namespace ArtnetEmu
 {
     public partial class WinampConfigForm : ConfigForm
     {
+        public WinampConfigForm()
+        {
+            InitializeComponent();
+        }
     }
 }

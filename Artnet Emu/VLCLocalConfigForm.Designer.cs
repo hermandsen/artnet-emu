@@ -114,6 +114,6 @@
 
         protected System.Windows.Forms.Label lblPassword;
         protected System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.CheckBox checkBoxAlwaysAdd;
+        protected System.Windows.Forms.CheckBox checkBoxAlwaysAdd;
     }
 }

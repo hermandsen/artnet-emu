@@ -28,10 +28,12 @@ namespace ArtnetEmu
             {
                 comboFileScanMethod.Items.Add(new ComboBoxOption<FileScanMethod>(method.ToString(), method));
             }
+            comboFileScanMethod.SelectedIndex = 0;
             foreach (FileEncoding encoding in Enum.GetValues(typeof(FileEncoding)))
             {
                 comboFileEncoding.Items.Add(new ComboBoxOption<FileEncoding>(encoding.ToString(), encoding));
             }
+            comboFileEncoding.SelectedIndex = 0;
         }
 
         public void SetConfiguration<Config>(Config config) where Config : PlayerConfiguration, new()

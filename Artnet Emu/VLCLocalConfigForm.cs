@@ -14,5 +14,9 @@ namespace ArtnetEmu
 {
     public partial class VLCLocalConfigForm : ConfigForm
     {
+        public VLCLocalConfigForm()
+        {
+            InitializeComponent();
+        }
     }
 }

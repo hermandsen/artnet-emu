@@ -139,6 +139,6 @@
         protected System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtUri;
         private System.Windows.Forms.Label lblUri;
-        private System.Windows.Forms.CheckBox checkBoxAlwaysAdd;
+        protected System.Windows.Forms.CheckBox checkBoxAlwaysAdd;
     }
 }

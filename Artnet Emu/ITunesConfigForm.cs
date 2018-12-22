@@ -14,5 +14,9 @@ namespace ArtnetEmu
 {
     public partial class ITunesConfigForm : ConfigForm
     {
+        public ITunesConfigForm()
+        {
+            InitializeComponent();
+        }
     }
 }
