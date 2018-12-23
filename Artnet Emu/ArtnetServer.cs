@@ -141,8 +141,7 @@ namespace ArtnetEmu
         public void Run()
         {
             UniverseSequences = new byte[256*256];
-            var localhost = new IPAddress(new byte[] { 127, 0, 0, 1 });
-            IPEndPoint listenerIp = new IPEndPoint(localhost, Port);
+            IPEndPoint listenerIp = new IPEndPoint(IPAddress.Any, Port);
             if (Socket != null)
             {
                 Socket.Close();
