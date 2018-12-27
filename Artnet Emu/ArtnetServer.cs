@@ -100,14 +100,16 @@ namespace ArtnetEmu
 
     public class ArtnetServer
     {
-        private IPAddress Ip;
+        private IPAddress SenderIp;
+        private IPAddress ReceiverIp;
         private int Port;
         private bool StopRequested = false;
         private byte[] UniverseSequences;
         private static UdpClient Socket;
-        public ArtnetServer(IPAddress ip, int port)
+        public ArtnetServer(IPAddress sender, IPAddress receiver, int port)
         {
-            Ip = ip;
+            SenderIp = sender;
+            ReceiverIp = receiver;
             Port = port;
         }
 
@@ -141,7 +143,7 @@ namespace ArtnetEmu
         public void Run()
         {
             UniverseSequences = new byte[256*256];
-            IPEndPoint listenerIp = new IPEndPoint(IPAddress.Any, Port);
+            IPEndPoint listenerIp = new IPEndPoint(ReceiverIp, Port);
             if (Socket != null)
             {
                 Socket.Close();
@@ -157,7 +159,7 @@ namespace ArtnetEmu
                 OnThreadState(ArtnetServerState.Aborted);
                 return;
             }
-            IPEndPoint senderIp = new IPEndPoint(Ip, 0);
+            IPEndPoint senderIp = new IPEndPoint(SenderIp, 0);
             OnThreadState(ArtnetServerState.Running);
             while (!StopRequested)
             {

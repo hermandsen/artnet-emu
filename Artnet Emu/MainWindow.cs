@@ -48,7 +48,9 @@ namespace ArtnetEmu
                 Config = new ApplicationConfiguration();
             }
             listConfigurations.Items.Clear();
-            txtIP.Text = Config.Address;
+            txtSenderIP.Text = Config.SenderIP;
+            txtReceiverIP.Text = Config.ReceiverIP;
+            menuITunes.Enabled = false;
 
             string version = ApplicationDeployment.IsNetworkDeployed ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString() : "debug";
             Text += " v." + version;
@@ -110,20 +112,34 @@ namespace ArtnetEmu
 
         private void btnStartListener_Click(object sender, EventArgs e)
         {
-            if (txtIP.Text == "")
+            if (txtSenderIP.Text == "")
             {
-                txtIP.Text = "127.0.0.1";
+                txtSenderIP.Text = "127.0.0.1";
             }
             IPAddress ip;
             try
             {
-                ip = IPAddress.Parse(txtIP.Text);
+                ip = IPAddress.Parse(txtSenderIP.Text);
             }
             catch (Exception exception)
             {
                 ShowMessageBox(exception.Message);
                 return;
             }
+            if (txtReceiverIP.Text == "")
+            {
+                txtReceiverIP.Text = "0.0.0.0";
+            }
+            try
+            {
+                ip = IPAddress.Parse(txtReceiverIP.Text);
+            }
+            catch (Exception exception)
+            {
+                ShowMessageBox(exception.Message);
+                return;
+            }
+
             btnStartListener.Enabled = false;
             Application.DoEvents();
             if (Server == null)
@@ -158,7 +174,7 @@ namespace ArtnetEmu
 
         private void StartServer()
         {
-            Server = new ArtnetServer(IPAddress.Parse(txtIP.Text), Convert.ToInt32(ConfigurationManager.AppSettings["ArtnetPort"]));
+            Server = new ArtnetServer(IPAddress.Parse(txtSenderIP.Text), IPAddress.Parse(txtReceiverIP.Text), Convert.ToInt32(ConfigurationManager.AppSettings["ArtnetPort"]));
             Server.ThreadState += Server_ThreadState;
             try {
                 foreach (PlayerConfiguration config in Config.Items)
@@ -228,6 +244,7 @@ namespace ArtnetEmu
                     PacketSequence = !PacketSequence;
                 }
                 pictureStatus.Invalidate();
+                lblStatus.Text = "Receiving";
             }
         }
 
@@ -243,6 +260,7 @@ namespace ArtnetEmu
             else
             {
                 btnStartListener.Text = state == ArtnetServerState.Running ? "Stop listener" : "Start listener";
+                lblStatus.Text = Enum.GetName(typeof (ArtnetServerState), state);
                 btnStartListener.Enabled = true;
                 if (state != ArtnetServerState.Running)
                 {
@@ -286,13 +304,15 @@ namespace ArtnetEmu
                 Server.Terminate();
                 Server = null;
             }
-            Config.Address = txtIP.Text;
+            Config.SenderIP = txtSenderIP.Text;
+            Config.ReceiverIP = txtReceiverIP.Text;
             Config.Save();
         }
 
         private void contextMenuListView_Opening(object sender, CancelEventArgs e)
         {
             bool visible = listConfigurations.SelectedItems.Count >= 1;
+            menuViewMissing.Visible = visible;
             menuViewFilelist.Visible = visible;
             menuViewDuplicates.Visible = visible;
             menuEditConfiguration.Visible = visible;

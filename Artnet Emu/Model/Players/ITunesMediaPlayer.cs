@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 /**
- * Remove comments in this file, to add support for iTunes.
+ * Remove comments in this file, and add iTunesLib as reference, to add support for iTunes.
  */
 //using iTunesLib;
 

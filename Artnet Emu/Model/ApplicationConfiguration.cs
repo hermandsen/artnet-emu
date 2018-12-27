@@ -12,12 +12,14 @@ namespace ArtnetEmu.Model
     public class ApplicationConfiguration
     {
         public List<PlayerConfiguration> Items;
-        public string Address;
+        public string SenderIP;
+        public string ReceiverIP;
 
         public ApplicationConfiguration()
         {
             Items = new List<PlayerConfiguration>();
-            Address = "127.0.0.1";
+            SenderIP = "127.0.0.1";
+            ReceiverIP = "0.0.0.0";
         }
         private static string GetConfigurationFilename()
         {
