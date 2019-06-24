@@ -23,17 +23,28 @@ using ArtnetEmu.Exceptions;
 using System.Reflection;
 using System.Diagnostics;
 using System.Deployment.Application;
+using ArtnetEmu.Model.ArtnetPackets;
+using System.Timers;
+using ArtnetEmu.Libraries;
+using System.Net.NetworkInformation;
 
 namespace ArtnetEmu
 {
+    public enum StatusType
+    {
+        PacketsPerSecond,
+        UniverseSequence,
+        LightingController
+    }
     public partial class MainWindow : Form
     {
         protected ApplicationConfiguration Config;
-        protected ArtnetServer Server;
-        protected Thread ServerThread;
-        protected System.Timers.Timer TimeoutTimer;
+        protected MediaPlayerManager Manager;
+        protected Dictionary<ushort, ToolStripItem> Indicators = new Dictionary<ushort, ToolStripItem>();
         protected long LastReceivedPacketTick = 0;
         protected bool PacketSequence = true;
+        private int PacketCounter = 0;
+        private StatusType StatusIndicator = StatusType.PacketsPerSecond;
         protected List<MediaPlayer<Fixture, PlayerConfiguration>> Players = new List<MediaPlayer<Fixture, PlayerConfiguration>>();
         public MainWindow()
         {
@@ -47,16 +58,64 @@ namespace ArtnetEmu
             {
                 Config = new ApplicationConfiguration();
             }
-            listConfigurations.Items.Clear();
-            txtSenderIP.Text = Config.SenderIP;
-            txtReceiverIP.Text = Config.ReceiverIP;
-            menuITunes.Enabled = false;
 
-            string version = ApplicationDeployment.IsNetworkDeployed ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString() : "debug";
-            Text += " v." + version;
+            CreateStatusMenu();
+
+            timerFileinfo.Interval = Convert.ToInt32(ConfigurationManager.AppSettings["FileinfoPullMiliseconds"]);
+            listConfigurations.Items.Clear();
+            txtRemoteIP.Text = Config.SenderIP;
+            RefreshNetworkInterfaces();
+            menuITunes.Enabled = false;
+            Width = Math.Min(Math.Max(Config.Width, 367), 600);
+            Height = Math.Min(Math.Max(Config.Height, 286), 600);
+            Text += " v." + this.GetVersion();
             foreach (PlayerConfiguration config in Config.Items)
             {
                 AddConfigurationToListView(config);
+            }
+        }
+
+        private string GetVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            return fvi.FileVersion;
+        }
+
+        private void CreateStatusMenu()
+        {
+            var regex = new System.Text.RegularExpressions.Regex("(?<!^)[A-Z]");
+            foreach (StatusType value in Enum.GetValues(typeof(StatusType)))
+            {
+                string text = value.ToString();
+                text = regex.Replace(text, (x) => " " + x.Value.ToLower());
+                var strip = toolStripStatusDropDownButton.DropDownItems.Add(text);
+                strip.Tag = value;
+                strip.Click += toolStripStatusClick;
+            }
+            UpdateStatusMenu();
+        }
+
+        private void UpdateStatusMenu()
+        {
+            var regex = new System.Text.RegularExpressions.Regex("(?<!^)[A-Z]");
+            string text = StatusIndicator.ToString();
+            text = regex.Replace(text, (x) => " " + x.Value.ToLower());
+            toolStripStatusDropDownButton.Text = text;
+        }
+
+        private void RefreshNetworkInterfaces()
+        {
+            comboBoxLocalIP.Items.Clear();
+            comboBoxLocalIP.Items.Add(new NetworkInterfaceItem("Any", IPAddress.Any));
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                var item = new NetworkInterfaceItem(ni);
+                comboBoxLocalIP.Items.Add(item);
+                if (item.Name == Config.NetworkInterface)
+                {
+                    comboBoxLocalIP.SelectedItem = item;
+                }
             }
         }
 
@@ -112,27 +171,20 @@ namespace ArtnetEmu
 
         private void btnStartListener_Click(object sender, EventArgs e)
         {
-            if (txtSenderIP.Text == "")
+            if (txtRemoteIP.Text == "")
             {
-                txtSenderIP.Text = "127.0.0.1";
+                txtRemoteIP.Text = "0.0.0.0";
             }
-            IPAddress ip;
+            IPAddress remoteIP;
+            IPAddress localIP;
             try
             {
-                ip = IPAddress.Parse(txtSenderIP.Text);
-            }
-            catch (Exception exception)
-            {
-                ShowMessageBox(exception.Message);
-                return;
-            }
-            if (txtReceiverIP.Text == "")
-            {
-                txtReceiverIP.Text = "0.0.0.0";
-            }
-            try
-            {
-                ip = IPAddress.Parse(txtReceiverIP.Text);
+                remoteIP = IPAddress.Parse(txtRemoteIP.Text);
+                if (comboBoxLocalIP.SelectedItem == null)
+                {
+                    comboBoxLocalIP.SelectedItem = comboBoxLocalIP.Items[0];
+                }
+                localIP = ((NetworkInterfaceItem)comboBoxLocalIP.SelectedItem).Address;
             }
             catch (Exception exception)
             {
@@ -140,88 +192,91 @@ namespace ArtnetEmu
                 return;
             }
 
-            btnStartListener.Enabled = false;
+            EnableInterface(false);
             Application.DoEvents();
-            if (Server == null)
+            if (Manager == null)
             {
-                ServerThread = new Thread(new ThreadStart(StartServer));
-                ServerThread.Start();
+                int port = Convert.ToInt32(ConfigurationManager.AppSettings["ArtnetPort"]);
+                IPEndPoint remote = new IPEndPoint(remoteIP, 0);
+                IPEndPoint local = new IPEndPoint(localIP, port);
+                var receiver = new ArtnetReceiver(remote, local);
+                Manager = new MediaPlayerManager(receiver, Config.Items);
+                Manager.OnThreadStateChanged += Server_ThreadState;
+                receiver.OnArtDMXPacketReceived += Server_PacketReceived;
+                receiver.OnArtPollReplyPacketReceived += Server_PollReplyPackedReceived;
+                Manager.Start();
             }
             else
             {
-                Server.StopThread();
-                // give the server a change to terminate gracefully,
-                // otherwise, just kill it after 3 seconds.
-                TimeoutTimer = new System.Timers.Timer();
-                TimeoutTimer.Elapsed += Timer_Elapsed;
-                TimeoutTimer.Interval = 3000;
-                TimeoutTimer.Enabled = true;
+                timerFileinfo.Enabled = false;
+                Manager.Stop();
             }
         }
 
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void EnableInterface(bool value)
         {
-            var t = (System.Timers.Timer)sender;
-            t.Enabled = false;
-            if (ServerThread != null)
+            btnStartListener.Enabled = value;
+            comboBoxLocalIP.Enabled = value;
+            txtRemoteIP.Enabled = value;
+            btnRefresh.Enabled = value;
+        }
+
+        private void Server_PollReplyPackedReceived(ArtPollReplyPacket packet)
+        {
+            if (this.InvokeRequired)
             {
-                ServerThread.Abort();
-                Server_ThreadState(ArtnetServerState.Terminated);
-                GC.Collect();
-                btnStartListener.Enabled = true;
+                Invoke(new ArtPollPacketReceived(Server_PollReplyPackedReceived), packet);
             }
-        }
-
-        private void StartServer()
-        {
-            Server = new ArtnetServer(IPAddress.Parse(txtSenderIP.Text), IPAddress.Parse(txtReceiverIP.Text), Convert.ToInt32(ConfigurationManager.AppSettings["ArtnetPort"]));
-            Server.ThreadState += Server_ThreadState;
-            try {
-                foreach (PlayerConfiguration config in Config.Items)
+            else if (StatusIndicator == StatusType.LightingController)
+            {
+                if (!Indicators.Any())
                 {
-                    switch (config)
-                    {
-                        case VLCLocalPlayerConfiguration x:
-                            VLCLocalMediaPlayer vlcLocal = new VLCLocalMediaPlayer(x);
-                            Server.PacketReceived += vlcLocal.PacketReceived;
-                            break;
-                        case VLCRemotePlayerConfiguration x:
-                            VLCRemoteMediaPlayer vlcRemote = new VLCRemoteMediaPlayer(x);
-                            Server.PacketReceived += vlcRemote.PacketReceived;
-                            break;
-                        case WinampPlayerConfiguration x:
-                            WinampMediaPlayer winamp = new WinampMediaPlayer(x);
-                            Server.PacketReceived += winamp.PacketReceived;
-                            break;
-                        case ITunesPlayerConfiguration x:
-                            ITunesMediaPlayer itunes = new ITunesMediaPlayer(x);
-                            Server.PacketReceived += itunes.PacketReceived;
-                            break;
-                        default:
-                            throw new Exception("You're missing a configuration stupid.");
-                    }
+                    Indicators[0] = statusStrip.Items.Add("");
                 }
-                Server.PacketReceived += Server_PacketReceived;
-                Server.Run();
-            }
-            catch (ServiceUnavailableException e)
-            {
-                ShowMessageBox(e.Message);
-                Server_ThreadState(ArtnetServerState.Terminated);
+                Indicators[0].Text = string.Format("{0} ({1})", packet.LongName, packet.IpAddress);
             }
         }
 
-        private void Server_PacketReceived(ArtNetPacket packet)
+        private void Server_PacketReceived(ArtDMXPacket packet)
         {
-            var tick = DateTime.Now.Ticks;
-            if (tick - LastReceivedPacketTick > 10000000) // 1000 ms
+            switch (StatusIndicator)
             {
-                LastReceivedPacketTick = tick;
-                InvokePacketReceived(packet);
+                case StatusType.PacketsPerSecond:
+                    var tick = DateTime.Now.Ticks;
+                    PacketCounter++;
+                    long dif = tick - LastReceivedPacketTick;
+                    if (dif >= 10000000) // 1000 ms
+                    {
+                        LastReceivedPacketTick = tick;
+                        InvokePacketsPerSecond(dif, PacketCounter);
+                        PacketCounter = 0;
+                    }
+                    break;
+                case StatusType.UniverseSequence:
+                    InvokePacketReceived(packet);
+                    break;
+                case StatusType.LightingController:
+                    break;
             }
         }
 
-        private void InvokePacketReceived(ArtNetPacket packet)
+        private void InvokePacketsPerSecond(long ticks, int packetCounter)
+        {
+            if (this.InvokeRequired)
+            {
+                Invoke(new PacketsPerSecondDelegate(InvokePacketsPerSecond), ticks, packetCounter);
+            }
+            else
+            {
+                if (!Indicators.Any())
+                {
+                    Indicators[0] = statusStrip.Items.Add("");
+                }
+                Indicators[0].Text = string.Format("{0,0:0.0} packets/second", packetCounter / (ticks / 10000000F));
+            }
+        }
+
+        private void InvokePacketReceived(ArtDMXPacket packet)
         {
             if (this.InvokeRequired)
             {
@@ -229,55 +284,76 @@ namespace ArtnetEmu
             }
             else
             {
-                if (pictureStatus.Image == null)
+                //lblStatus.Text = "Universe data: ";
+                string txt = string.Format("{0}:{1}", packet.Universe, packet.Sequence);
+                if (Indicators.ContainsKey(packet.Universe))
                 {
-                    Bitmap bmp = new Bitmap(pictureStatus.Width, pictureStatus.Height);
-                    using (Graphics g = Graphics.FromImage(bmp))
+                    Indicators[packet.Universe].Text = txt;
+                }
+                else
+                {
+                    int distance = 256*256;
+                    int index = statusStrip.Items.Count;
+                    foreach (ushort key in Indicators.Keys)
                     {
-                        g.Clear(Color.Black);
+                        int dif = key - packet.Universe;
+                        if (dif > 0 && dif < distance)
+                        {
+                            distance = dif;
+                            index = statusStrip.Items.IndexOf(Indicators[key]);
+                        }
                     }
-                    pictureStatus.Image = bmp;
+                    ToolStripItem item = new ToolStripLabel(txt);
+                    Indicators[packet.Universe] = item;
+                    statusStrip.Items.Insert(index, item);
                 }
-                using (Graphics g = Graphics.FromImage(pictureStatus.Image))
-                {
-                    g.FillRectangle(PacketSequence ? Brushes.Green : Brushes.Black, new Rectangle(0, 0, pictureStatus.Width, pictureStatus.Height));
-                    PacketSequence = !PacketSequence;
-                }
-                pictureStatus.Invalidate();
-                lblStatus.Text = "Receiving";
             }
         }
 
-        private delegate void UpdateThreadStatusDelegate(ArtnetServerState state);
         private delegate void ShowMessageBoxDelegate(string message);
-        private delegate void PacketReceivedDelegate(ArtNetPacket packet);
-        private void Server_ThreadState(ArtnetServerState state)
+        private delegate void PacketReceivedDelegate(ArtDMXPacket packet);
+        private delegate void PacketsPerSecondDelegate(long ticks, int packetCounter);
+        private delegate void ArtPollPacketReceived(ArtPollReplyPacket packet);
+        private void Server_ThreadState(ArtnetServerState state, string message)
         {
             if (this.InvokeRequired)
             {
-                Invoke(new UpdateThreadStatusDelegate(Server_ThreadState), state);
+                Invoke(new ThreadStateChangedEvent(Server_ThreadState), state, message);
             }
             else
             {
                 btnStartListener.Text = state == ArtnetServerState.Running ? "Stop listener" : "Start listener";
-                lblStatus.Text = Enum.GetName(typeof (ArtnetServerState), state);
+                //lblStatus.Text = Enum.GetName(typeof (ArtnetServerState), state);
                 btnStartListener.Enabled = true;
-                if (state != ArtnetServerState.Running)
+                if (state == ArtnetServerState.Running)
                 {
-                    Server.Terminate();
-                    Server = null;
-                    ServerThread = null;
-                    if (TimeoutTimer != null)
+                    if (StatusIndicator == StatusType.LightingController && Manager != null)
                     {
-                        TimeoutTimer.Enabled = false;
-                        TimeoutTimer = null;
+                        Manager.Server.SendArtPollPacket();
                     }
                 }
-                if (state == ArtnetServerState.Aborted)
+                else
                 {
-                    ShowMessageBox("Another instance is blocking the port.\nThe program might be running in the background.");
+                    EnableInterface(true);
+                    Manager.OnThreadStateChanged -= Server_ThreadState;
+                    Manager = null;
+                    ClearStatus();
+                }
+                checkPlayingInfo_CheckedChanged(null, null);
+                if (message != null)
+                {
+                    ShowMessageBox(message);
                 }
             }
+        }
+
+        private void ClearStatus()
+        {
+            foreach (var x in Indicators.Values)
+            {
+                x.Dispose();
+            }
+            Indicators.Clear();
         }
 
         public void ShowMessageBox(string message)
@@ -294,25 +370,27 @@ namespace ArtnetEmu
 
         private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (ServerThread != null)
+            timerFileinfo.Enabled = false;
+            if (Manager != null)
             {
-                ServerThread.Abort();
+                Manager.Stop();
             }
-            if (Server != null)
+            Config.SenderIP = txtRemoteIP.Text;
+            var item = comboBoxLocalIP.SelectedItem as NetworkInterfaceItem;
+            if (item != null)
             {
-                Server.StopThread();
-                Server.Terminate();
-                Server = null;
+                Config.NetworkInterface = item.Name;
             }
-            Config.SenderIP = txtSenderIP.Text;
-            Config.ReceiverIP = txtReceiverIP.Text;
+            Config.Width = Width;
+            Config.Height = Height;
             Config.Save();
         }
 
         private void contextMenuListView_Opening(object sender, CancelEventArgs e)
         {
             bool visible = listConfigurations.SelectedItems.Count >= 1;
-            menuViewMissing.Visible = visible;
+            PlayerConfiguration configuration = visible ? (PlayerConfiguration)listConfigurations.SelectedItems[0].Tag : null;
+            menuViewMissing.Visible = visible && configuration.FileScanMethod == FileScanMethod.Filelist && !(configuration is VLCRemotePlayerConfiguration);
             menuViewFilelist.Visible = visible;
             menuViewDuplicates.Visible = visible;
             menuEditConfiguration.Visible = visible;
@@ -396,5 +474,77 @@ namespace ArtnetEmu
             }
         }
 
+        private void toolStripStatusClick(object sender, EventArgs e)
+        {
+            var item = (ToolStripItem)sender;
+            var status = (StatusType)item.Tag;
+
+            StatusIndicator = status;
+
+            PacketCounter = 0;
+            LastReceivedPacketTick = DateTime.Now.Ticks;
+            ClearStatus();
+
+            if (Manager != null) {
+                Manager.Server.SendArtPollPacket();
+            }
+
+            UpdateStatusMenu();
+        }
+
+        private void checkPlayingInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            timerFileinfo.Enabled = checkPlayingInfo.Checked && Manager != null;
+            if (timerFileinfo.Enabled)
+            {
+                timerFileinfo_Tick(null, null);
+            }
+            else
+            {
+                ResetFileinfo();
+            }
+        }
+
+        private void timerFileinfo_Tick(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Manager.Players.Count; i++)
+            {
+                DisplayFileinfo(Manager.Players[i], listConfigurations.Items[i]);
+            }
+        }
+
+        private void DisplayFileinfo(IPlayingMediaPlayer player, ListViewItem item)
+        {
+            string filename = player.GetPlayingFilename();
+            if (filename != null)
+            {
+                var index = player.GetIndex(filename);
+                item.SubItems[2].Text = string.Format(ConfigurationManager.AppSettings["FileinfoDescriptor"],
+                    index == null ? "?" : index.Group.ToString(),
+                    index == null ? "?" : index.FileIndex.ToString(),
+                    player.GetPlayingTitle()
+                );
+            }
+        }
+        private void ResetFileinfo()
+        {
+            if (!InvokeRequired)
+            {
+                for (int i = 0; i < Math.Min(listConfigurations.Items.Count, Config.Items.Count); i++)
+                {
+                    listConfigurations.Items[i].SubItems[2].Text = Config.Items[i].ExtraInfo();
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            var item = (NetworkInterfaceItem)comboBoxLocalIP.SelectedItem;
+            if (item != null)
+            {
+                Config.NetworkInterface = item.Name;
+            }
+            RefreshNetworkInterfaces();
+        }
     }
 }

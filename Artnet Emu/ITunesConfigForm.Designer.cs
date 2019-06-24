@@ -28,19 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ((System.ComponentModel.ISupportInitialize)(this.numericPhysical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).BeginInit();
             this.SuspendLayout();
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.Location = new System.Drawing.Point(121, 187);
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Location = new System.Drawing.Point(6, 187);
             // 
             // ITunesConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 254);
+            this.ClientSize = new System.Drawing.Size(216, 222);
             this.Name = "ITunesConfigForm";
             this.Text = "iTunes Config";
-            ((System.ComponentModel.ISupportInitialize)(this.numericPhysical)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).EndInit();
             this.ResumeLayout(false);

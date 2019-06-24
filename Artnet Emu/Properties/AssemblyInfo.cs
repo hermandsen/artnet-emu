@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -6,7 +7,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Artnet Emu")]
-[assembly: AssemblyDescription("Controlling Winamp, VLC and iTunes via the Art-Net protocol")]
+[assembly: AssemblyDescription("Controlling Winamp and VLC via the Art-Net protocol")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else
@@ -37,4 +38,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: NeutralResourcesLanguage("en")]
+

@@ -32,7 +32,7 @@ namespace ArtnetEmu.Model
                         Files.LoadFromFilestructure(config.FolderPath);
                         break;
                     case FileScanMethod.Regex:
-                        Files.LoadFromFilestructure(config.FolderPath, new Regex(config.Regex));
+                        Files.LoadFromFilestructure(config.FolderPath, new Regex(config.Regex, RegexOptions.IgnoreCase));
                         break;
                 }
             }

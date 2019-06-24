@@ -13,13 +13,17 @@ namespace ArtnetEmu.Model
     {
         public List<PlayerConfiguration> Items;
         public string SenderIP;
-        public string ReceiverIP;
+        public string NetworkInterface;
+        public int Width;
+        public int Height;
 
         public ApplicationConfiguration()
         {
             Items = new List<PlayerConfiguration>();
             SenderIP = "127.0.0.1";
-            ReceiverIP = "0.0.0.0";
+            NetworkInterface = "";
+            Width = 378;
+            Height = 329;
         }
         private static string GetConfigurationFilename()
         {

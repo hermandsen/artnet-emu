@@ -1,22 +1,49 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artnet Emu", "Artnet Emu\Artnet Emu.csproj", "{73C12208-00CD-46CE-843A-611EB6E228DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtnetEmu", "Artnet Emu\ArtnetEmu.csproj", "{73C12208-00CD-46CE-843A-611EB6E228DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArtnetEmuTest", "Artnet Emu Test\ArtnetEmuTest.csproj", "{BA40923E-3D33-4727-A17D-37F3A04EA8C2}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ArtnetEmuSetup", "ArtnetEmuSetup\ArtnetEmuSetup.wixproj", "{77499406-A963-4702-AF17-F55639CF4058}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{73C12208-00CD-46CE-843A-611EB6E228DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73C12208-00CD-46CE-843A-611EB6E228DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C12208-00CD-46CE-843A-611EB6E228DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{73C12208-00CD-46CE-843A-611EB6E228DE}.Debug|x86.Build.0 = Debug|Any CPU
 		{73C12208-00CD-46CE-843A-611EB6E228DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73C12208-00CD-46CE-843A-611EB6E228DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73C12208-00CD-46CE-843A-611EB6E228DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{73C12208-00CD-46CE-843A-611EB6E228DE}.Release|x86.Build.0 = Release|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA40923E-3D33-4727-A17D-37F3A04EA8C2}.Release|x86.Build.0 = Release|Any CPU
+		{77499406-A963-4702-AF17-F55639CF4058}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{77499406-A963-4702-AF17-F55639CF4058}.Debug|x86.ActiveCfg = Debug|x86
+		{77499406-A963-4702-AF17-F55639CF4058}.Debug|x86.Build.0 = Debug|x86
+		{77499406-A963-4702-AF17-F55639CF4058}.Release|Any CPU.ActiveCfg = Release|x86
+		{77499406-A963-4702-AF17-F55639CF4058}.Release|x86.ActiveCfg = Release|x86
+		{77499406-A963-4702-AF17-F55639CF4058}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F0C138A-1E50-4FAE-BE59-9D8246266D83}
 	EndGlobalSection
 EndGlobal

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ArtnetEmu.Model;
+using ArtnetEmu.Model.Configs;
 using System.Reflection;
 using System.Globalization;
 

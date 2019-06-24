@@ -1,4 +1,5 @@
-﻿using ArtnetEmu.Model.Configs;
+﻿using ArtnetEmu.Exceptions;
+using ArtnetEmu.Model.Configs;
 using ArtnetEmu.Model.Fixtures;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,12 @@ namespace ArtnetEmu.Model.Players
             Uri uri = new Uri(filename);
             filename = uri.AbsoluteUri;
             Client.AddToPlaylistAndPlay(filename);
+        }
+        public override FileIndexItem GetIndex(string filename)
+        {
+            Uri uri = new Uri(filename);
+            filename = uri.LocalPath;
+            return base.GetIndex(filename);
         }
         public override void AddToPlaylistAndPlay(string filename, PlayMode mode)
         {
@@ -82,6 +89,14 @@ namespace ArtnetEmu.Model.Players
         public override void PacketReceived(VLCFixture packet)
         {
             base.PacketReceived((CommonFixture)packet);
+        }
+        public override string GetPlayingFilename()
+        {
+            return Client.GetPlayingFilename();
+        }
+        public override string GetPlayingTitle()
+        {
+            return Client.GetPlayingTitle();
         }
     }
 }

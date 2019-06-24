@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.lblArtNetIpServer = new System.Windows.Forms.Label();
-            this.txtSenderIP = new System.Windows.Forms.TextBox();
+            this.lblRemoteIP = new System.Windows.Forms.Label();
+            this.txtRemoteIP = new System.Windows.Forms.TextBox();
             this.btnStartListener = new System.Windows.Forms.Button();
             this.listConfigurations = new System.Windows.Forms.ListView();
             this.columnApplication = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -50,40 +50,43 @@
             this.menuEditConfiguration = new System.Windows.Forms.ToolStripMenuItem();
             this.menuSeperator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuDelete = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureStatus = new System.Windows.Forms.PictureBox();
-            this.txtReceiverIP = new System.Windows.Forms.TextBox();
-            this.lblArtNetIpReceiver = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblNetwork = new System.Windows.Forms.Label();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusDropDownButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.checkPlayingInfo = new System.Windows.Forms.CheckBox();
+            this.timerFileinfo = new System.Windows.Forms.Timer(this.components);
+            this.comboBoxLocalIP = new System.Windows.Forms.ComboBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.contextMenuListView.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureStatus)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblArtNetIpServer
+            // lblRemoteIP
             // 
-            this.lblArtNetIpServer.AutoSize = true;
-            this.lblArtNetIpServer.Location = new System.Drawing.Point(9, 9);
-            this.lblArtNetIpServer.Name = "lblArtNetIpServer";
-            this.lblArtNetIpServer.Size = new System.Drawing.Size(204, 13);
-            this.lblArtNetIpServer.TabIndex = 0;
-            this.lblArtNetIpServer.Text = "ArtNet sender (127.0.0.1 is local machine)";
+            this.lblRemoteIP.AutoSize = true;
+            this.lblRemoteIP.Location = new System.Drawing.Point(12, 42);
+            this.lblRemoteIP.Name = "lblRemoteIP";
+            this.lblRemoteIP.Size = new System.Drawing.Size(57, 13);
+            this.lblRemoteIP.TabIndex = 0;
+            this.lblRemoteIP.Text = "Remote IP";
             // 
-            // txtSenderIP
+            // txtRemoteIP
             // 
-            this.txtSenderIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtRemoteIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSenderIP.Location = new System.Drawing.Point(12, 25);
-            this.txtSenderIP.Name = "txtSenderIP";
-            this.txtSenderIP.Size = new System.Drawing.Size(221, 20);
-            this.txtSenderIP.TabIndex = 1;
-            this.txtSenderIP.Text = "127.0.0.1";
+            this.txtRemoteIP.Location = new System.Drawing.Point(75, 39);
+            this.txtRemoteIP.Name = "txtRemoteIP";
+            this.txtRemoteIP.Size = new System.Drawing.Size(157, 20);
+            this.txtRemoteIP.TabIndex = 1;
+            this.txtRemoteIP.Text = "127.0.0.1";
             // 
             // btnStartListener
             // 
             this.btnStartListener.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStartListener.Location = new System.Drawing.Point(239, 48);
+            this.btnStartListener.Location = new System.Drawing.Point(238, 12);
             this.btnStartListener.Name = "btnStartListener";
-            this.btnStartListener.Size = new System.Drawing.Size(112, 36);
-            this.btnStartListener.TabIndex = 2;
+            this.btnStartListener.Size = new System.Drawing.Size(112, 47);
+            this.btnStartListener.TabIndex = 3;
             this.btnStartListener.Text = "Start listener";
             this.btnStartListener.UseVisualStyleBackColor = true;
             this.btnStartListener.Click += new System.EventHandler(this.btnStartListener_Click);
@@ -100,11 +103,11 @@
             this.listConfigurations.ContextMenuStrip = this.contextMenuListView;
             this.listConfigurations.FullRowSelect = true;
             this.listConfigurations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listConfigurations.Location = new System.Drawing.Point(12, 90);
+            this.listConfigurations.Location = new System.Drawing.Point(15, 88);
             this.listConfigurations.MultiSelect = false;
             this.listConfigurations.Name = "listConfigurations";
-            this.listConfigurations.Size = new System.Drawing.Size(339, 208);
-            this.listConfigurations.TabIndex = 3;
+            this.listConfigurations.Size = new System.Drawing.Size(335, 177);
+            this.listConfigurations.TabIndex = 4;
             this.listConfigurations.UseCompatibleStateImageBehavior = false;
             this.listConfigurations.View = System.Windows.Forms.View.Details;
             // 
@@ -152,28 +155,28 @@
             // menuITunes
             // 
             this.menuITunes.Name = "menuITunes";
-            this.menuITunes.Size = new System.Drawing.Size(180, 22);
+            this.menuITunes.Size = new System.Drawing.Size(139, 22);
             this.menuITunes.Text = "iTunes";
             this.menuITunes.Click += new System.EventHandler(this.menuITunes_Click);
             // 
             // menuWinamp
             // 
             this.menuWinamp.Name = "menuWinamp";
-            this.menuWinamp.Size = new System.Drawing.Size(180, 22);
+            this.menuWinamp.Size = new System.Drawing.Size(139, 22);
             this.menuWinamp.Text = "Winamp";
             this.menuWinamp.Click += new System.EventHandler(this.menuWinamp_Click);
             // 
             // menuVLCLocal
             // 
             this.menuVLCLocal.Name = "menuVLCLocal";
-            this.menuVLCLocal.Size = new System.Drawing.Size(180, 22);
+            this.menuVLCLocal.Size = new System.Drawing.Size(139, 22);
             this.menuVLCLocal.Text = "VLC Local";
             this.menuVLCLocal.Click += new System.EventHandler(this.menuVLCLocal_Click);
             // 
             // menuVLCRemote
             // 
             this.menuVLCRemote.Name = "menuVLCRemote";
-            this.menuVLCRemote.Size = new System.Drawing.Size(180, 22);
+            this.menuVLCRemote.Size = new System.Drawing.Size(139, 22);
             this.menuVLCRemote.Text = "VLC Remote";
             this.menuVLCRemote.Click += new System.EventHandler(this.menuVLCRemote_Click);
             // 
@@ -222,73 +225,101 @@
             this.menuDelete.Text = "Delete";
             this.menuDelete.Click += new System.EventHandler(this.menuDelete_Click);
             // 
-            // pictureStatus
+            // lblNetwork
             // 
-            this.pictureStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureStatus.Image = ((System.Drawing.Image)(resources.GetObject("pictureStatus.Image")));
-            this.pictureStatus.Location = new System.Drawing.Point(339, 10);
-            this.pictureStatus.Name = "pictureStatus";
-            this.pictureStatus.Size = new System.Drawing.Size(12, 12);
-            this.pictureStatus.TabIndex = 15;
-            this.pictureStatus.TabStop = false;
+            this.lblNetwork.AutoSize = true;
+            this.lblNetwork.Location = new System.Drawing.Point(12, 15);
+            this.lblNetwork.Name = "lblNetwork";
+            this.lblNetwork.Size = new System.Drawing.Size(47, 13);
+            this.lblNetwork.TabIndex = 16;
+            this.lblNetwork.Text = "Network";
             // 
-            // txtReceiverIP
+            // statusStrip
             // 
-            this.txtReceiverIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusDropDownButton});
+            this.statusStrip.Location = new System.Drawing.Point(0, 268);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(362, 22);
+            this.statusStrip.TabIndex = 19;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // toolStripStatusDropDownButton
+            // 
+            this.toolStripStatusDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripStatusDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripStatusDropDownButton.Name = "toolStripStatusDropDownButton";
+            this.toolStripStatusDropDownButton.Size = new System.Drawing.Size(52, 20);
+            this.toolStripStatusDropDownButton.Text = "Status";
+            // 
+            // checkPlayingInfo
+            // 
+            this.checkPlayingInfo.AutoSize = true;
+            this.checkPlayingInfo.Location = new System.Drawing.Point(15, 65);
+            this.checkPlayingInfo.Name = "checkPlayingInfo";
+            this.checkPlayingInfo.Size = new System.Drawing.Size(150, 17);
+            this.checkPlayingInfo.TabIndex = 20;
+            this.checkPlayingInfo.Text = "Display playing information";
+            this.checkPlayingInfo.UseVisualStyleBackColor = true;
+            this.checkPlayingInfo.CheckedChanged += new System.EventHandler(this.checkPlayingInfo_CheckedChanged);
+            // 
+            // timerFileinfo
+            // 
+            this.timerFileinfo.Interval = 1000;
+            this.timerFileinfo.Tick += new System.EventHandler(this.timerFileinfo_Tick);
+            // 
+            // comboBoxLocalIP
+            // 
+            this.comboBoxLocalIP.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtReceiverIP.Location = new System.Drawing.Point(12, 64);
-            this.txtReceiverIP.Name = "txtReceiverIP";
-            this.txtReceiverIP.Size = new System.Drawing.Size(221, 20);
-            this.txtReceiverIP.TabIndex = 17;
-            this.txtReceiverIP.Text = "127.0.0.1";
+            this.comboBoxLocalIP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLocalIP.FormattingEnabled = true;
+            this.comboBoxLocalIP.Location = new System.Drawing.Point(75, 12);
+            this.comboBoxLocalIP.Name = "comboBoxLocalIP";
+            this.comboBoxLocalIP.Size = new System.Drawing.Size(124, 21);
+            this.comboBoxLocalIP.TabIndex = 21;
             // 
-            // lblArtNetIpReceiver
+            // btnRefresh
             // 
-            this.lblArtNetIpReceiver.AutoSize = true;
-            this.lblArtNetIpReceiver.Location = new System.Drawing.Point(9, 48);
-            this.lblArtNetIpReceiver.Name = "lblArtNetIpReceiver";
-            this.lblArtNetIpReceiver.Size = new System.Drawing.Size(173, 13);
-            this.lblArtNetIpReceiver.TabIndex = 16;
-            this.lblArtNetIpReceiver.Text = "ArtNet receiver (0.0.0.0 is any host)";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStatus.Location = new System.Drawing.Point(239, 9);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(94, 13);
-            this.lblStatus.TabIndex = 18;
-            this.lblStatus.Text = "Status";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Image = global::ArtnetEmu.Properties.Resources.refresh;
+            this.btnRefresh.Location = new System.Drawing.Point(205, 11);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(27, 23);
+            this.btnRefresh.TabIndex = 22;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 310);
+            this.ClientSize = new System.Drawing.Size(362, 290);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.comboBoxLocalIP);
+            this.Controls.Add(this.checkPlayingInfo);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnStartListener);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.txtReceiverIP);
-            this.Controls.Add(this.lblArtNetIpReceiver);
-            this.Controls.Add(this.pictureStatus);
+            this.Controls.Add(this.lblNetwork);
             this.Controls.Add(this.listConfigurations);
-            this.Controls.Add(this.txtSenderIP);
-            this.Controls.Add(this.lblArtNetIpServer);
+            this.Controls.Add(this.txtRemoteIP);
+            this.Controls.Add(this.lblRemoteIP);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainWindow";
             this.Text = "Artnet Emu";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.contextMenuListView.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureStatus)).EndInit();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label lblArtNetIpServer;
-        private System.Windows.Forms.TextBox txtSenderIP;
+        private System.Windows.Forms.Label lblRemoteIP;
+        private System.Windows.Forms.TextBox txtRemoteIP;
         private System.Windows.Forms.Button btnStartListener;
         private System.Windows.Forms.ListView listConfigurations;
         private System.Windows.Forms.ColumnHeader columnApplication;
@@ -306,11 +337,14 @@
         private System.Windows.Forms.ToolStripSeparator menuSeperator1;
         private System.Windows.Forms.ToolStripSeparator menuSeperator2;
         private System.Windows.Forms.ColumnHeader columnDescription;
-        private System.Windows.Forms.PictureBox pictureStatus;
         private System.Windows.Forms.ToolStripMenuItem menuViewMissing;
-        private System.Windows.Forms.TextBox txtReceiverIP;
-        private System.Windows.Forms.Label lblArtNetIpReceiver;
-        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblNetwork;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripStatusDropDownButton;
+        private System.Windows.Forms.CheckBox checkPlayingInfo;
+        private System.Windows.Forms.Timer timerFileinfo;
+        private System.Windows.Forms.ComboBox comboBoxLocalIP;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 

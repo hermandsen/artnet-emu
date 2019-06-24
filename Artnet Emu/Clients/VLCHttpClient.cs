@@ -148,6 +148,34 @@ namespace ArtnetEmu
             return "";
         }
 
+        private Leaf GetPlayingNode()
+        {
+            VLCPlaylistModel playlist = MakePlaylistRequest();
+            foreach (var list in playlist.Lists)
+            {
+                foreach (var file in list.Files)
+                {
+                    if (file.Current == "current")
+                    {
+                        return file;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public string GetPlayingFilename()
+        {
+            Leaf leaf = GetPlayingNode();
+            return leaf?.Uri;
+        }
+
+        public string GetPlayingTitle()
+        {
+            Leaf leaf = GetPlayingNode();
+            return leaf?.Name;
+        }
+
         public VLCStatusModel AddToPlaylistAndPlay(string fileUri)
         {
             return MakeStatusRequest("in_play", "input=" + System.Web.HttpUtility.UrlEncode(fileUri));

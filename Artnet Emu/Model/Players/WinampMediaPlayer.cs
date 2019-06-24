@@ -129,7 +129,7 @@ namespace ArtnetEmu.Model
                         Files.LoadFromFilestructure(config.FolderPath);
                         break;
                     case FileScanMethod.Regex:
-                        Files.LoadFromFilestructure(config.FolderPath, new Regex(config.Regex));
+                        Files.LoadFromFilestructure(config.FolderPath, new Regex(config.Regex, RegexOptions.IgnoreCase));
                         break;
                 }
             }
@@ -139,5 +139,14 @@ namespace ArtnetEmu.Model
             }
         }
 
+        public override string GetPlayingFilename()
+        {
+            return Client.PlaylistFilename(Client.PlaylistPosition);
+        }
+
+        public override string GetPlayingTitle()
+        {
+            return Client.PlaylistTitle(Client.PlaylistPosition);
+        }
     }
 }

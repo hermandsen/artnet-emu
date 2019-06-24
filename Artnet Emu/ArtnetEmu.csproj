@@ -27,11 +27,11 @@
     <ErrorReportUrl>https://github.com/hermandsen/artnet-emu</ErrorReportUrl>
     <TargetCulture>en-DK</TargetCulture>
     <ProductName>Artnet Emu</ProductName>
-    <PublisherName>Jesper Hermansen</PublisherName>
+    <PublisherName>Artnet Emu</PublisherName>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -80,6 +80,9 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -112,12 +115,18 @@
       <DependentUpon>FilelistForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\DuplicateFileIndexException.cs" />
+    <Compile Include="Libraries\ArtnetReceiverThread.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="MediaPlayerManager.cs" />
+    <Compile Include="Model\ArtnetPackets\ArtDMXPacket.cs" />
+    <Compile Include="Model\ArtnetPackets\ArtnetPacket.cs" />
+    <Compile Include="Model\ArtnetPackets\ArtPollPacket.cs" />
+    <Compile Include="Model\ArtnetPackets\ArtPollReplyPacket.cs" />
     <Compile Include="Model\ComboBoxOption.cs" />
     <Compile Include="Model\ConfigAttribute.cs" />
     <Compile Include="Model\Configs\ITunesPlayerConfiguration.cs" />
@@ -130,9 +139,11 @@
     <Compile Include="Model\Fixtures\CommonFixture.cs" />
     <Compile Include="Model\Fixtures\ITunesFixture.cs" />
     <Compile Include="Model\Fixtures\WinampFixture.cs" />
+    <Compile Include="Model\Interfaces\IPreloader.cs" />
     <Compile Include="Model\MediaPlayer.cs" />
-    <Compile Include="Model\PlayerConfiguration.cs" />
+    <Compile Include="Model\Configs\PlayerConfiguration.cs" />
     <Compile Include="Model\ApplicationConfiguration.cs" />
+    <Compile Include="Model\NetworkInterfaceItem.cs" />
     <Compile Include="Model\Players\ITunesMediaPlayer.cs" />
     <Compile Include="Model\Players\WinampMediaPlayer.cs" />
     <Compile Include="Model\Players\VLCMediaPlayer.cs" />
@@ -144,7 +155,7 @@
     <Compile Include="Model\VLCStatusModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ArtnetServer.cs" />
+    <Compile Include="Libraries\ArtnetReceiver.cs" />
     <Compile Include="ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,7 +240,9 @@
     <None Include="Record\Record.shfbproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -245,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Resources\refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

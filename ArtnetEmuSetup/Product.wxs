@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define ArtnetEmu_TargetDir=$(var.ArtnetEmu.TargetDir)?>
+	<Product Id="4015db87-7f60-4a84-81f8-0109ad22443d" Name="Artnet Emu" Language="1033" Version="!(bind.fileVersion.Artnet_Emu.exe)" Manufacturer="Jesper Hermansen" UpgradeCode="e9ebac35-3d31-47d7-ad6b-6795adbb7caf">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico"/>
+
+    <WixVariable Id="WixUIBannerBmp" Value="Images\banner.bmp"/>
+    <WixVariable Id="WixUIDialogBmp" Value="Images\dialog.bmp"/>
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf"/>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
+    <UIRef Id="WixUI_InstallDir"/>
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of Artnet Emu is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="ArtnetEmuSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut"/>
+      <ComponentRef Id="ApplicationShortcutDesktop"/>
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Artnet Emu" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Artnet Emu" />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop"/>
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="7ed07da7-8781-494f-a46e-fc78d2d851cf">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Artnet Emu"
+                  Description="Artnet listener for media players"
+                  Target="[INSTALLFOLDER]Artnet Emu.exe"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\ArtnetEmu" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="3a26d0d6-827f-4bf8-8435-844f965a4ac1">
+        <Shortcut Id="ApplicationDesktopShortcut"
+                  Name="Artnet Emu"
+                  Description="Artnet listener for media players"
+                  Target="[INSTALLFOLDER]Artnet Emu.exe"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\ArtnetEmu" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="Artnet_Emu.exe" Guid="5b12bc40-5a19-4849-b14a-670f6412105b">
+        <File Id="Artnet_Emu.exe" Name="Artnet Emu.exe" Source="$(var.ArtnetEmu_TargetDir)Artnet Emu.exe" />
+      </Component>
+      <Component Id="Artnet_Emu.exe.config" Guid="52d81791-be35-451a-a0f5-6b1024567311">
+        <File Id="Artnet_Emu.exe.config" Name="Artnet Emu.exe.config" Source="$(var.ArtnetEmu_TargetDir)Artnet Emu.exe.config" />
+      </Component>
+      <Component Id="log4net.dll" Guid="26247bb4-f0cf-4fa6-977b-955acafaeeb5">
+        <File Id="log4net.dll" Name="log4net.dll" Source="$(var.ArtnetEmu_TargetDir)log4net.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

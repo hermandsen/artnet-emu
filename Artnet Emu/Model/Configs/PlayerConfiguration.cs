@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArtnetEmu.Model
+namespace ArtnetEmu.Model.Configs
 {
     public enum FileScanMethod : byte
     {
@@ -24,12 +24,8 @@ namespace ArtnetEmu.Model
     [Serializable]
     public class PlayerConfiguration
     {
-        [Config("numericPhysical", ControlType.NumericUpDown, IntType.U1)]
-        public byte Physical { get; set; }
-
         [Config("numericUniverse", ControlType.NumericUpDown, IntType.U2)]
         public ushort Universe { get; set; }
-
         [Config("numericAddress", ControlType.NumericUpDown, IntType.U2)]
         public ushort Address { get; set; }
         [Config("txtFolderPath", ControlType.TextBox)]

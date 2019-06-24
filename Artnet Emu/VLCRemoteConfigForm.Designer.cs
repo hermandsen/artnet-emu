@@ -33,23 +33,22 @@
             this.txtUri = new System.Windows.Forms.TextBox();
             this.lblUri = new System.Windows.Forms.Label();
             this.checkBoxAlwaysAdd = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericPhysical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(127, 338);
+            this.buttonCancel.Location = new System.Drawing.Point(127, 298);
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(12, 338);
+            this.buttonOK.Location = new System.Drawing.Point(12, 298);
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(3, 285);
+            this.lblPassword.Location = new System.Drawing.Point(3, 249);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(202, 13);
             this.lblPassword.TabIndex = 13;
@@ -57,7 +56,7 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(6, 301);
+            this.txtPassword.Location = new System.Drawing.Point(6, 265);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(100, 20);
             this.txtPassword.TabIndex = 14;
@@ -65,7 +64,7 @@
             // 
             // txtUri
             // 
-            this.txtUri.Location = new System.Drawing.Point(6, 257);
+            this.txtUri.Location = new System.Drawing.Point(6, 221);
             this.txtUri.Name = "txtUri";
             this.txtUri.Size = new System.Drawing.Size(131, 20);
             this.txtUri.TabIndex = 7;
@@ -74,7 +73,7 @@
             // lblUri
             // 
             this.lblUri.AutoSize = true;
-            this.lblUri.Location = new System.Drawing.Point(3, 241);
+            this.lblUri.Location = new System.Drawing.Point(3, 205);
             this.lblUri.Name = "lblUri";
             this.lblUri.Size = new System.Drawing.Size(43, 13);
             this.lblUri.TabIndex = 6;
@@ -85,7 +84,7 @@
             this.checkBoxAlwaysAdd.AutoSize = true;
             this.checkBoxAlwaysAdd.Checked = true;
             this.checkBoxAlwaysAdd.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAlwaysAdd.Location = new System.Drawing.Point(6, 217);
+            this.checkBoxAlwaysAdd.Location = new System.Drawing.Point(6, 181);
             this.checkBoxAlwaysAdd.Name = "checkBoxAlwaysAdd";
             this.checkBoxAlwaysAdd.Size = new System.Drawing.Size(101, 17);
             this.checkBoxAlwaysAdd.TabIndex = 29;
@@ -96,7 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(216, 373);
+            this.ClientSize = new System.Drawing.Size(216, 333);
             this.Controls.Add(this.checkBoxAlwaysAdd);
             this.Controls.Add(this.lblUri);
             this.Controls.Add(this.txtUri);
@@ -114,8 +113,6 @@
             this.Controls.SetChildIndex(this.lblEncoding, 0);
             this.Controls.SetChildIndex(this.buttonOK, 0);
             this.Controls.SetChildIndex(this.buttonCancel, 0);
-            this.Controls.SetChildIndex(this.numericPhysical, 0);
-            this.Controls.SetChildIndex(this.lblPhysical, 0);
             this.Controls.SetChildIndex(this.lblUniverse, 0);
             this.Controls.SetChildIndex(this.lblAddress, 0);
             this.Controls.SetChildIndex(this.numericUniverse, 0);
@@ -125,7 +122,6 @@
             this.Controls.SetChildIndex(this.txtUri, 0);
             this.Controls.SetChildIndex(this.lblUri, 0);
             this.Controls.SetChildIndex(this.checkBoxAlwaysAdd, 0);
-            ((System.ComponentModel.ISupportInitialize)(this.numericPhysical)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUniverse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericAddress)).EndInit();
             this.ResumeLayout(false);
