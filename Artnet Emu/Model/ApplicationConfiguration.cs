@@ -1,10 +1,12 @@
 ﻿using ArtnetEmu.Model.Configs;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace ArtnetEmu.Model
@@ -16,6 +18,8 @@ namespace ArtnetEmu.Model
         public string NetworkInterface;
         public int Width;
         public int Height;
+        public Point Location;
+        public FormWindowState WindowState;
 
         public ApplicationConfiguration()
         {
@@ -24,6 +28,8 @@ namespace ArtnetEmu.Model
             NetworkInterface = "";
             Width = 378;
             Height = 329;
+            Location = new Point(300, 200);
+            WindowState = FormWindowState.Normal;
         }
         private static string GetConfigurationFilename()
         {

@@ -66,8 +66,19 @@ namespace ArtnetEmu
             txtRemoteIP.Text = Config.SenderIP;
             RefreshNetworkInterfaces();
             menuITunes.Enabled = false;
-            Width = Math.Min(Math.Max(Config.Width, 367), 600);
-            Height = Math.Min(Math.Max(Config.Height, 286), 600);
+            switch (Config.WindowState)
+            {
+                case FormWindowState.Maximized:
+                    WindowState = FormWindowState.Maximized;
+                    break;
+                case FormWindowState.Minimized:
+                case FormWindowState.Normal:
+                default:
+                    Width = Math.Min(Math.Max(Config.Width, 367), 600);
+                    Height = Math.Min(Math.Max(Config.Height, 286), 600);
+                    Location = Config.Location;
+                    break;
+            }
             Text += " v." + this.GetVersion();
             foreach (PlayerConfiguration config in Config.Items)
             {
@@ -383,6 +394,8 @@ namespace ArtnetEmu
             }
             Config.Width = Width;
             Config.Height = Height;
+            Config.Location = Location;
+            Config.WindowState = WindowState;
             Config.Save();
         }
 
