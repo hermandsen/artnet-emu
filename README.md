@@ -47,7 +47,7 @@ The fixtures uses 5 channel.
 | 26 | 50 | Play file |
 | 51 | 75 | Play file and stop |
 | 76 | 100 | Stop |
-| 100 | 125 | Pause |
+| 101 | 125 | Pause |
 | 126 | 150 | Resume |
 | 151 | 175 | Next |
 | 176 | 200 | Previous |
