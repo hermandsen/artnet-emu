@@ -64,9 +64,10 @@ Note about Play file and stop
 
 #### Control ranges
 
-| 0 - 245 | 246 - 255 |
-| -- | -- |
-| Ignore | Execute |
+| From | To | Control |
+| -- | -- | -- |
+| 0 | 245 | Ignore |
+| 246 | 255 | Execute |
 
 #### Controlling the media player
 
