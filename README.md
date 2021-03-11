@@ -25,33 +25,34 @@ The fixtures uses 5 channel.
 | 4       | Mode    | Which action to perform
 | 5       | Control | Makes the action execute
 
-Volume _(channel 1)_
+<dl>
+	<dt>Volume (channel 1)</dt>
+	<dd>0 - 255: Volume ranging from muted to 100% volume.</dd>
+	<dt>Group (channel 2)</dt>
+	<dd>0 - 255: Group index for playing specific files.</dd>
+	<dt>File (channel 3)</dt>
+	<dd>0 - 255: File index for playing specific files.</dd>
+	<dt>Mode (channel 4)</dt>
+	<dd>See table below</dd>
+	<dt>Control (channel 5)</dt>
+	<dd>See table below</dd>
+</dl>
 
-: 0 - 255: Volume ranging from muted to 100% volume.
-
-Group _(channel 2)_
-
-: 0 - 255: Group index for playing specific files.
-
-File _(channel 3)_
-
-: 0 - 255: File index for playing specific files.
-
-Mode _(channel 4)_
-
-: See table below
+** Mode ranges **
 
 | 0-25 | 26 - 50 | 51 - 75 | 76 - 100 | 101 - 125 | 126 - 150 | 151 - 175 | 176 - 200 | 201 - 255 |
 | -- | -- | -- | -- | -- | -- | -- | -- | -- |
-| Ignore | Play file[^1] | Play file and stop[^2] | Stop | Pause | Resume | Next | Previous | Reserved |
+| Ignore | Play file | Play file and stop | Stop | Pause | Resume | Next | Previous | Reserved |
 
-[^1]: When executing in **Play file** mode, playback is only started if the file is found with group index and file index.
+Notes about Play file
 
-[^2]: Only Winamp supports stopping playback after the files has played - other players will treat this command as **Play file**.
+> When executing in **Play file** mode, playback is only started if the file is found with group index and file index.
 
-Control _(channel 5)_
+Note about Play file and stop
 
-: See table below
+> Only Winamp supports stopping playback after the files has played - other players will treat this command as **Play file**.
+
+** Control ranges **
 
 | 0 - 245 | 246 - 255 |
 | -- | -- |
@@ -213,6 +214,7 @@ Please notice that the application does not warn about missing files or overlapp
 ![Folder structure example. Show music contains Intro 001, Lions 003, Sea monster 004, Speaks DE 202, Speaks FR 201, Speaks UK 200 and Tigers 002](https://i.imgur.com/Hbi63vd.png)
 
 4. Add files into the folders with the **file number in the file name**.
+
 ![File structure example.](https://i.imgur.com/rcPFV7e.png)
 
 5. Add a media player in ArtNet Emu.
@@ -231,67 +233,58 @@ Please notice that the application does not warn about missing files or overlapp
 
 Connect you lighting console to Artnet Emu by pressing **Start listener**, and set the following channels to these values:
 
-Channel 1 (Volume)
-
-: 100%
-
-Channel 2 (Group)
-
-: 1
-
-Channel 3 (File)
-
-: 1
-
-Channel 4 (Mode)
-
-: 38 `Play`
-
-Channel 5 (Control)
-
-: 255 `Execute`
+<dl>
+	<dt>Channel 1 (Volume)</dt>
+	<dd>100%</dd>
+	<dt>Channel 2 (Group)</dt>
+	<dd>1</dd>
+	<dt>Channel 3 (File)</dt>
+	<dd>1</dd>
+	<dt>Channel 4 (Mode)</dt>
+	<dd>38 (Play)</dd>
+	<dt>Channel 5 (Control)</dt>
+	<dd>255 (Execute)</dd>
+</dl>
 
 The first file in the first group should play.
 
 ## VLC on local machine, using playlist
 1. First [setup VLC](#setting-up-vlc) to allow external control.
+
 2. Add a media player in ArtNet Emu.
+
 ![Right click. Add media player. VLC Local](https://i.imgur.com/UbA0vPM.png)
+
 3. Setup the configuration for VLC. Point your __*Folderpath* to an empty folder__. Type in the password for VLC, and press OK.
+
 ![VLC Config window](https://i.imgur.com/lKnnxm6.png)
 
 4. Open VLC and add files to the playlist.
+
 ![VLC Playlist](https://i.imgur.com/yexBMBT.png)
 
 Connect you lighting console to Artnet Emu by pressing **Start listener**, and set the following channels to these values:
 
-Channel 1 (Volume)
-
-: 100%
-
-Channel 2 (Group)
-
-: 0
-
-Channel 3 (File)
-
-: 0
-
-Channel 4 (Mode)
-
-: 163 `Next`
-
-Channel 5 (Control)
-
-: 255 `Execute`
+<dl>
+	<dt<Channel 1 (Volume)</dt>
+	<dd>100%</dd>
+	<dt>Channel 2 (Group)</dt>
+	<dd>0</dd>
+	<dt>Channel 3 (File)</dt>
+	<dd>0</dd>
+	<dt>Channel 4 (Mode)</dt>
+	<dd>163 (Next)</dd>
+	<dt>Channel 5 (Control)</dt>
+	<dd>255 (Execute)</dd>
+</dl>
 
 The first file in the playlist should play.
 
-You can navigate the playlist using these commands
-
-: Stop
-: Pause
-: Resume
-: Next
-: Previous
-
+<dl>
+	<dt>You can navigate the playlist using these commands</dt>
+	<dd>Stop</dd>
+	<dd>Pause</dd>
+	<dd>Resume</dd>
+	<dd>Next</dd>
+	<dd>Previous</dd>
+</dl>
