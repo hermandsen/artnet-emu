@@ -41,9 +41,17 @@ The fixtures uses 5 channel.
 
 #### Mode ranges
 
-| 0-25 | 26 - 50 | 51 - 75 | 76 - 100 | 101 - 125 | 126 - 150 | 151 - 175 | 176 - 200 | 201 - 255 |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- |
-| Ignore | Play file | Play file and stop | Stop | Pause | Resume | Next | Previous | Reserved |
+| From | To | Mode |
+| --: | --: | :-- |
+| 0 | 25 | Ignore |
+| 26 | 50 | Play file |
+| 51 | 75 | Play file and stop |
+| 76 | 100 | Stop |
+| 100 | 125 | Pause |
+| 126 | 150 | Resume |
+| 151 | 175 | Next |
+| 176 | 200 | Previous |
+| 201 | 255 | Reserved |
 
 Notes about Play file
 
