@@ -53,7 +53,7 @@ The fixtures uses 5 channel.
 | 176 | 200 | Previous |
 | 201 | 255 | Reserved |
 
-Notes about Play file
+Note about Play file
 
 > When executing in **Play file** mode, playback is only started if the file is found with group index and file index.
 
