@@ -38,7 +38,8 @@ The fixtures uses 5 channel.
 	<dd>See table below</dd>
 </dl>
 
-** Mode ranges **
+
+#### Mode ranges
 
 | 0-25 | 26 - 50 | 51 - 75 | 76 - 100 | 101 - 125 | 126 - 150 | 151 - 175 | 176 - 200 | 201 - 255 |
 | -- | -- | -- | -- | -- | -- | -- | -- | -- |
@@ -52,11 +53,14 @@ Note about Play file and stop
 
 > Only Winamp supports stopping playback after the files has played - other players will treat this command as **Play file**.
 
-** Control ranges **
+
+#### Control ranges
 
 | 0 - 245 | 246 - 255 |
 | -- | -- |
 | Ignore | Execute |
+
+#### Controlling the media player
 
 Group and file are only used in mode `Play file` and `Play file and stop`.
 
@@ -266,7 +270,7 @@ The first file in the first group should play.
 Connect you lighting console to Artnet Emu by pressing **Start listener**, and set the following channels to these values:
 
 <dl>
-	<dt<Channel 1 (Volume)</dt>
+	<dt>Channel 1 (Volume)</dt>
 	<dd>100%</dd>
 	<dt>Channel 2 (Group)</dt>
 	<dd>0</dd>
