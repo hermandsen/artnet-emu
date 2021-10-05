@@ -64,6 +64,7 @@ namespace ArtnetEmu
             timerFileinfo.Interval = Convert.ToInt32(ConfigurationManager.AppSettings["FileinfoPullMiliseconds"]);
             listConfigurations.Items.Clear();
             txtRemoteIP.Text = Config.SenderIP;
+            checkAutoListen.Checked = Config.ListenOnStartup;
             RefreshNetworkInterfaces();
             menuITunes.Enabled = false;
             switch (Config.WindowState)
@@ -83,6 +84,11 @@ namespace ArtnetEmu
             foreach (PlayerConfiguration config in Config.Items)
             {
                 AddConfigurationToListView(config);
+            }
+
+            if (Config.ListenOnStartup)
+            {
+                btnStartListener_Click(sender, e);
             }
         }
 
@@ -346,7 +352,10 @@ namespace ArtnetEmu
                 else
                 {
                     EnableInterface(true);
-                    Manager.OnThreadStateChanged -= Server_ThreadState;
+                    if (Manager != null)
+                    {
+                        Manager.OnThreadStateChanged -= Server_ThreadState;
+                    }
                     Manager = null;
                     ClearStatus();
                 }
@@ -387,6 +396,7 @@ namespace ArtnetEmu
                 Manager.Stop();
             }
             Config.SenderIP = txtRemoteIP.Text;
+            Config.ListenOnStartup = checkAutoListen.Checked;
             var item = comboBoxLocalIP.SelectedItem as NetworkInterfaceItem;
             if (item != null)
             {

@@ -57,6 +57,7 @@
             this.timerFileinfo = new System.Windows.Forms.Timer(this.components);
             this.comboBoxLocalIP = new System.Windows.Forms.ComboBox();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.checkAutoListen = new System.Windows.Forms.CheckBox();
             this.contextMenuListView.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -76,14 +77,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRemoteIP.Location = new System.Drawing.Point(75, 39);
             this.txtRemoteIP.Name = "txtRemoteIP";
-            this.txtRemoteIP.Size = new System.Drawing.Size(157, 20);
+            this.txtRemoteIP.Size = new System.Drawing.Size(151, 20);
             this.txtRemoteIP.TabIndex = 1;
             this.txtRemoteIP.Text = "127.0.0.1";
             // 
             // btnStartListener
             // 
             this.btnStartListener.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStartListener.Location = new System.Drawing.Point(238, 12);
+            this.btnStartListener.Location = new System.Drawing.Point(232, 12);
             this.btnStartListener.Name = "btnStartListener";
             this.btnStartListener.Size = new System.Drawing.Size(112, 47);
             this.btnStartListener.TabIndex = 3;
@@ -103,10 +104,11 @@
             this.listConfigurations.ContextMenuStrip = this.contextMenuListView;
             this.listConfigurations.FullRowSelect = true;
             this.listConfigurations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listConfigurations.HideSelection = false;
             this.listConfigurations.Location = new System.Drawing.Point(15, 88);
             this.listConfigurations.MultiSelect = false;
             this.listConfigurations.Name = "listConfigurations";
-            this.listConfigurations.Size = new System.Drawing.Size(335, 177);
+            this.listConfigurations.Size = new System.Drawing.Size(329, 177);
             this.listConfigurations.TabIndex = 4;
             this.listConfigurations.UseCompatibleStateImageBehavior = false;
             this.listConfigurations.View = System.Windows.Forms.View.Details;
@@ -240,7 +242,7 @@
             this.toolStripStatusDropDownButton});
             this.statusStrip.Location = new System.Drawing.Point(0, 268);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(362, 22);
+            this.statusStrip.Size = new System.Drawing.Size(356, 22);
             this.statusStrip.TabIndex = 19;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -276,25 +278,37 @@
             this.comboBoxLocalIP.FormattingEnabled = true;
             this.comboBoxLocalIP.Location = new System.Drawing.Point(75, 12);
             this.comboBoxLocalIP.Name = "comboBoxLocalIP";
-            this.comboBoxLocalIP.Size = new System.Drawing.Size(124, 21);
+            this.comboBoxLocalIP.Size = new System.Drawing.Size(118, 21);
             this.comboBoxLocalIP.TabIndex = 21;
             // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.Image = global::ArtnetEmu.Properties.Resources.refresh;
-            this.btnRefresh.Location = new System.Drawing.Point(205, 11);
+            this.btnRefresh.Location = new System.Drawing.Point(199, 11);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(27, 23);
             this.btnRefresh.TabIndex = 22;
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // checkAutoListen
+            // 
+            this.checkAutoListen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkAutoListen.AutoSize = true;
+            this.checkAutoListen.Location = new System.Drawing.Point(240, 65);
+            this.checkAutoListen.Name = "checkAutoListen";
+            this.checkAutoListen.Size = new System.Drawing.Size(104, 17);
+            this.checkAutoListen.TabIndex = 23;
+            this.checkAutoListen.Text = "Listen on startup";
+            this.checkAutoListen.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 290);
+            this.ClientSize = new System.Drawing.Size(356, 290);
+            this.Controls.Add(this.checkAutoListen);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.comboBoxLocalIP);
             this.Controls.Add(this.checkPlayingInfo);
@@ -345,6 +359,7 @@
         private System.Windows.Forms.Timer timerFileinfo;
         private System.Windows.Forms.ComboBox comboBoxLocalIP;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.CheckBox checkAutoListen;
     }
 }
 

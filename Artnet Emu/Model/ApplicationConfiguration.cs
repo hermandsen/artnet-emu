@@ -19,6 +19,7 @@ namespace ArtnetEmu.Model
         public int Width;
         public int Height;
         public Point Location;
+        public bool ListenOnStartup;
         public FormWindowState WindowState;
 
         public ApplicationConfiguration()
@@ -30,6 +31,7 @@ namespace ArtnetEmu.Model
             Height = 329;
             Location = new Point(300, 200);
             WindowState = FormWindowState.Normal;
+            ListenOnStartup = false;
         }
         private static string GetConfigurationFilename()
         {

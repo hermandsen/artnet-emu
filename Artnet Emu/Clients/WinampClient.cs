@@ -24,13 +24,21 @@ namespace ArtnetEmu.Clients
             [MarshalAs(UnmanagedType.LPStr)]
             public string lpData;
         }
-        private IntPtr WinampHwnd;
+        private IntPtr _winampHwnd;
         public WinampClient()
         {
-            WinampHwnd = FindWindow("Winamp v1.x", null);
-            if (WinampHwnd == IntPtr.Zero)
+            _winampHwnd = FindWindow("Winamp v1.x", null);
+        }
+
+        private IntPtr WinampHwnd
+        {
+            get
             {
-                throw new ServiceUnavailableException("Unable to find Winamp. Open Winamp before starting the server.");
+                if (_winampHwnd == IntPtr.Zero)
+                {
+                    _winampHwnd = FindWindow("Winamp v1.x", null);
+                }
+                return _winampHwnd;
             }
         }
 
