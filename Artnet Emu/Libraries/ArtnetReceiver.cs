@@ -131,11 +131,19 @@ namespace ArtnetEmu.Libraries
                 ServerSocket.Client.ExclusiveAddressUse = false;
                 ServerSocket.Client.Bind(LocalEndPoint);
             }
-            catch (SocketException)
+            catch (SocketException e)
             {
                 // port may already be in use
                 ServerSocket = null;
-                InvokeOnThreadState(ArtnetServerState.Aborted, "Another instance is blocking the port.\nThe program might be running in the background.");
+                string message = "Another instance is blocking the port.\nThe program might be running in the background.";
+                try
+                {
+                    var blockingApp = UdpTableReader.GetAllUdpConnections().FirstOrDefault(x => x.LocalPort == LocalEndPoint.Port && x.LocalAddress.Equals(LocalEndPoint.Address));
+                    if (blockingApp != null)
+                        message = $"{blockingApp.ProcessTitle} is blocking the port.\nClose the program, or choose another network adapter.";
+                }
+                catch {}
+                InvokeOnThreadState(ArtnetServerState.Aborted, message);
                 return;
             }
             catch (Exception e)
